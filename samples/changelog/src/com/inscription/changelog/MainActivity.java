@@ -29,4 +29,12 @@ public class MainActivity extends Activity {
 		_ChangelogDialog.show();  		
 	}
 
+	public void onCustomStyleClick(View v) {
+		//Launch change log dialog
+		ChangeLogDialog _ChangelogDialog = new ChangeLogDialog(this);
+		_ChangelogDialog.SetStyle("h1 { margin-left: 10px; font-size: 12pt; color: #006b9a; margin-bottom: 0px;}" 
+				+ "li { margin-left: 0px; font-size: 12pt; padding-top: 10px; }" 
+				+ "ul { padding-left: 30px; margin-top: 0px; }");
+		_ChangelogDialog.show();  		
+	}	
 }

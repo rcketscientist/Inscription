@@ -44,6 +44,10 @@ public class ChangeLogDialog {
     static final private String CHANGELOG_XML = "changelog"; 
 	
     private Activity fActivity;
+    private String fStyle =	"h1 { margin-left: 0px; font-size: 12pt; }" 
+			+ "li { margin-left: 0px; font-size: 9pt;}" 
+			+ "ul { padding-left: 30px;}";
+ 
     
 	public ChangeLogDialog(Activity context) {
         fActivity = context;
@@ -77,12 +81,11 @@ public class ChangeLogDialog {
 	
 	//CSS style for the html
 	private String GetStyle() {
-		return 
-				"<style type=\"text/css\">"
-				+ "h1 { margin-left: 0px; font-size: 12pt; }" 
-				+ "li { margin-left: 0px; font-size: 9pt;}" 
-				+ "ul { padding-left: 30px;}" 
-				+ "</style>";
+		return "<style type=\"text/css\">" + fStyle + "</style>";
+	}
+	
+	public void SetStyle(String aStyle) {
+		fStyle = aStyle;
 	}
 	
 	//Get the changelog in html code, this will be shown in the dialog's webview
