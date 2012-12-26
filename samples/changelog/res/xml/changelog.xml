@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <changelog>
-    <release version="1.2" versioncode="3">
+    <release version="1.2" versioncode="3" summary="Example summary">
         <change>Fixed: A bug fix</change>
         <change>Button appearance changed</change>
         <change>More small layout changes</change>

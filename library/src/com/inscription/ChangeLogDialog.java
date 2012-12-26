@@ -46,8 +46,9 @@ public class ChangeLogDialog {
 	
     private Activity fActivity;
     private String fStyle =	"h1 { margin-left: 0px; font-size: 12pt; }" 
-			+ "li { margin-left: 0px; font-size: 9pt;}" 
-			+ "ul { padding-left: 30px;}";
+			+ "li { margin-left: 0px; font-size: 9pt; }" 
+			+ "ul { padding-left: 30px; }"
+			+ ".summary { font-size: 9pt; color: #606060; }";
  
     
 	public ChangeLogDialog(Activity context) {
@@ -71,7 +72,14 @@ public class ChangeLogDialog {
 	
 	//Parse a the release tag and return html code
 	private String ParseReleaseTag(XmlResourceParser aXml) throws XmlPullParserException, IOException {
-		String _Result = "<h1>Release: " + aXml.getAttributeValue(null, "version") + "</h1><ul>";
+		String _Result = "<h1>Release: " + aXml.getAttributeValue(null, "version") + "</h1>";
+		//Add summary if available
+		if (aXml.getAttributeValue(null, "summary") != null)
+			_Result +=  "<span class='summary'>" + aXml.getAttributeValue(null, "summary") + "</span>";
+		
+		_Result += "<ul>";
+		
+		//Parse child nodes
         int eventType = aXml.getEventType();
         while ((eventType != XmlPullParser.END_TAG) || (aXml.getName().equals("change"))) {
         	if ((eventType == XmlPullParser.START_TAG) &&(aXml.getName().equals("change"))){
