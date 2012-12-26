@@ -1,12 +1,16 @@
 package com.inscription;
 
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
 import com.inscription.R;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -16,6 +20,7 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.res.Resources;
 import android.content.res.XmlResourceParser;
+import android.text.format.DateFormat;
 import android.util.Log;
 import android.webkit.WebView;
 import android.widget.Toast;
@@ -48,7 +53,8 @@ public class ChangeLogDialog {
     private String fStyle =	"h1 { margin-left: 0px; font-size: 12pt; }" 
 			+ "li { margin-left: 0px; font-size: 9pt; }" 
 			+ "ul { padding-left: 30px; }"
-			+ ".summary { font-size: 9pt; color: #606060; }";
+			+ ".summary { font-size: 9pt; color: #606060; display: block; clear: left; }"
+			+ ".date { font-size: 9pt; color: #606060;  display: block; }";
  
     
 	public ChangeLogDialog(Activity context) {
@@ -69,10 +75,29 @@ public class ChangeLogDialog {
 			return "";
 		}
 	}
+
+	//Parse a date string from the xml and format it using the local date format
+	@SuppressLint("SimpleDateFormat")
+	private String ParseDate(String aString) {
+		SimpleDateFormat _dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+		try 
+		{
+			Date _ParsedDate = _dateFormat.parse(aString);
+			return DateFormat.getDateFormat(GetContext()).format(_ParsedDate); 
+		} catch (ParseException e) {
+			//If there is a problem parsing the date just return the original string
+			return aString;
+		}		
+	}
 	
 	//Parse a the release tag and return html code
 	private String ParseReleaseTag(XmlResourceParser aXml) throws XmlPullParserException, IOException {
 		String _Result = "<h1>Release: " + aXml.getAttributeValue(null, "version") + "</h1>";
+		
+		//Add date if available
+		if (aXml.getAttributeValue(null, "date") != null)
+			_Result +=  "<span class='date'>" + ParseDate(aXml.getAttributeValue(null, "date")) + "</span>";
+
 		//Add summary if available
 		if (aXml.getAttributeValue(null, "summary") != null)
 			_Result +=  "<span class='summary'>" + aXml.getAttributeValue(null, "summary") + "</span>";

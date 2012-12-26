@@ -35,7 +35,8 @@ public class MainActivity extends Activity {
 		_ChangelogDialog.SetStyle("h1 { margin-left: 10px; font-size: 12pt; color: #006b9a; margin-bottom: 0px;}" 
 				+ "li { margin-left: 0px; font-size: 12pt; padding-top: 10px; }" 
 				+ "ul { padding-left: 30px; margin-top: 0px; }"
-				+ ".summary { margin-left: 10px; font-size: 10pt; color: #006b9a; margin-top: 5px; display: block; }" );
+				+ ".summary { margin-left: 10px; font-size: 10pt; color: #006b9a; margin-top: 5px; display: block; clear: left; }" 
+				+ ".date { margin-left: 10px; font-size: 10pt; color: #006b9a; margin-top: 5px; display: block; }" );
 		_ChangelogDialog.show();  		
 	}	
 }
