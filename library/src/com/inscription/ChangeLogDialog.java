@@ -10,6 +10,7 @@ import com.inscription.R;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
@@ -53,6 +54,10 @@ public class ChangeLogDialog {
         fActivity = context;
     }
 
+	protected Context GetContext() {
+		return fActivity;
+	}
+	
 	//Get the current app version
 	private String GetAppVersion(){
 		try {
@@ -89,7 +94,8 @@ public class ChangeLogDialog {
 	}
 	
 	//Get the changelog in html code, this will be shown in the dialog's webview
-	private String GetHTMLChangelog(int aResourceId, Resources aResource) {
+	private String GetHTMLChangelog(int aResourceId, Resources aResource, int aVersion) {
+		boolean _ReleaseFound = false;
 		String _Result = "<html><head>" + GetStyle() + "</head><body>";
     	XmlResourceParser _xml = aResource.getXml(aResourceId);
     	try
@@ -97,8 +103,13 @@ public class ChangeLogDialog {
             int eventType = _xml.getEventType();
             while (eventType != XmlPullParser.END_DOCUMENT) {
             	if ((eventType == XmlPullParser.START_TAG) &&(_xml.getName().equals("release"))){
-            		_Result = _Result + ParseReleaseTag(_xml);
-      		
+            		//Check if the version matches the release tag.
+            		//When aVersion is 0 every release tag is parsed.
+            		int _VersionCode = Integer.parseInt(_xml.getAttributeValue(null, "versioncode"));
+            		if ((aVersion == 0) || (_VersionCode == aVersion)) {
+            			_Result = _Result + ParseReleaseTag(_xml);
+            			_ReleaseFound = true; //At lease one release tag has been parsed.
+            		}      		
 	            }
             	eventType = _xml.next();
             }
@@ -106,22 +117,32 @@ public class ChangeLogDialog {
     	catch (XmlPullParserException e)
     	{
     		Log.e(TAG, e.getMessage(), e);
+    		return "";
     	}
     	catch (IOException e)
     	{
     		Log.e(TAG, e.getMessage(), e);
-    		
+    		return "";    		
     	}        	
     	finally
     	{        	
     		_xml.close();
     	}		
 		_Result = _Result + "</body></html>";
-		return _Result;
+		
+		//Check if there was a release tag parsed, if not return an empty string.
+		if (_ReleaseFound)
+			return _Result;
+		else
+			return "";
 	}
 	
-	//Call to show the changelog dialog
+	//Call to show the change log dialog
     public void show() {
+    	show(0);
+    }
+    
+	protected void show(int aVersion) {
     	//Get resources
     	String _PackageName = fActivity.getPackageName();
     	Resources _Resource;
@@ -137,23 +158,22 @@ public class ChangeLogDialog {
         String _Title = _Resource.getString(_resID);
       	_Title = _Title + " v" + GetAppVersion();
  
-        //Get Changelog xml resource id
+        //Get change log xml resource id
       	_resID = _Resource.getIdentifier(CHANGELOG_XML, "xml", _PackageName);
         //Create html change log
-       	String _HTML = GetHTMLChangelog(_resID, _Resource);
+       	String _HTML = GetHTMLChangelog(_resID, _Resource, aVersion);
        	
         //Get button strings
         String _Close =  _Resource.getString(R.string.changelog_close);
 
-        //Check for empty changelog
+        //Check for empty change log
         if (_HTML.equals("") == true)
         {
-        	//Could not load change log, message user and exit void
-        	Toast.makeText(fActivity, "Could not load change log", Toast.LENGTH_SHORT).show();
+        	//It seems like there is nothing to show, just bail out.
         	return;
         }
         
-        //Create webview and load html
+        //Create web view and load html
         WebView _WebView = new WebView(fActivity);
         _WebView.loadData(_HTML, "text/html", "utf-8");
         AlertDialog.Builder builder = new AlertDialog.Builder(fActivity)
