@@ -16,5 +16,6 @@
 
     <modules>
         <module>changelog</module>
+        <module>whatsnewdialog</module>
     </modules>
 </project>
