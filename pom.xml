@@ -35,7 +35,7 @@
             <name>Martin van Zuilekom</name>
             <email>github@cubeactive.com</email>
             <id>MartinvanZ</id>
-            <url>Martin van Zuilekom</url>
+            <url>http://martin.cubeactive.com/</url>
             <timezone>+1</timezone>
             <roles>
                 <role>developer</role>
@@ -53,7 +53,7 @@
 
     <organization>
         <name>Martin van Zuilekom</name>
-        <url>Martin van Zuilekom</url>
+        <url>http://martin.cubeactive.com/</url>
     </organization>
 
     <issueManagement>
