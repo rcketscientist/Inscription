@@ -49,6 +49,7 @@ public class ChangeLogDialog {
             + ".summary { font-size: 9pt; color: #606060; display: block; clear: left; }"
             + ".date { font-size: 9pt; color: #606060;  display: block; }";
 
+    protected DialogInterface.OnDismissListener mOnDismissListener;
 
     public ChangeLogDialog(final Context context) {
         mContext = context;
@@ -120,6 +121,11 @@ public class ChangeLogDialog {
         mStyle = style;
     }
 
+    public ChangeLogDialog setOnDismissListener(final DialogInterface.OnDismissListener onDismissListener) {
+        mOnDismissListener = onDismissListener;
+        return this;
+    }
+
     //Get the changelog in html code, this will be shown in the dialog's webview
     private String getHTMLChangelog(final int resourceId, final Resources resources, final int version) {
         boolean releaseFound = false;
@@ -164,7 +170,7 @@ public class ChangeLogDialog {
         show(0);
     }
 
-    protected void show(final int aVersion) {
+    protected void show(final int version) {
         //Get resources
         final String packageName = mContext.getPackageName();
         final Resources resources;
@@ -179,7 +185,7 @@ public class ChangeLogDialog {
         title = String.format("%s v%s", title, getAppVersion());
 
         //Create html change log
-        final String htmlChangelog = getHTMLChangelog(R.xml.changelog, resources, aVersion);
+        final String htmlChangelog = getHTMLChangelog(R.xml.changelog, resources, version);
 
         //Get button strings
         final String closeString = resources.getString(R.string.changelog_close);
@@ -201,7 +207,16 @@ public class ChangeLogDialog {
                         dialogInterface.dismiss();
                     }
                 });
-        builder.create().show();
+        AlertDialog dialog = builder.create();
+        dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(final DialogInterface dialog) {
+                if (mOnDismissListener != null) {
+                    mOnDismissListener.onDismiss(dialog);
+                }
+            }
+        });
+        dialog.show();
     }
 
 }

@@ -27,7 +27,7 @@ import android.preference.PreferenceManager;
  * Class to show a dialog with the latest changes for the current app version.
  */
 public class WhatsNewDialog extends ChangeLogDialog {
-    static final private String WHATS_NEW_LAST_SHOWN = "whats_new_last_shown";
+    private static final String WHATS_NEW_LAST_SHOWN = "whats_new_last_shown";
 
     public WhatsNewDialog(final Context context) {
         super(context);
@@ -45,7 +45,7 @@ public class WhatsNewDialog extends ChangeLogDialog {
 
     public void forceShow() {
         //Show only the changes from this version (if available)
-        super.show(getAppVersionCode());
+        show(getAppVersionCode());
     }
 
     @Override
@@ -61,6 +61,9 @@ public class WhatsNewDialog extends ChangeLogDialog {
             final SharedPreferences.Editor edit = prefs.edit();
             edit.putInt(WHATS_NEW_LAST_SHOWN, getAppVersionCode());
             edit.commit();
+        }
+        if(mOnDismissListener != null) {
+            mOnDismissListener.onDismiss(null);
         }
     }
 }
