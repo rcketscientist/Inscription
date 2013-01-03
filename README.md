@@ -11,12 +11,12 @@ http://martin.cubeactive.com/inscription/**
 Contains
 ============
 This library contains the following classes:
-**ChangeLogDialog**
-**WhatsNewDialog**
+- **ChangeLogDialog**
+- **WhatsNewDialog**
 
 Sample projects:
-**Inscription Sample Changelog**
-**Inscription Sample Whats New dialog**
+- **Inscription Sample Changelog**
+- **Inscription Sample Whats New dialog**
 
 Contribute
 ============
