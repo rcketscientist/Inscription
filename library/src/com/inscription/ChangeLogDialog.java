@@ -21,6 +21,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.DialogInterface.OnCancelListener;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.res.Resources;
@@ -165,6 +166,22 @@ public class ChangeLogDialog {
         }
     }
 
+    //Returns change log in HTML format 
+    public String getHTML() {
+    	//TODO: Remove duplicate code with the method show()
+        //Get resources
+        final String packageName = mContext.getPackageName();
+        final Resources resources;
+        try {
+            resources = mContext.getPackageManager().getResourcesForApplication(packageName);
+        } catch (NameNotFoundException ignored) {
+            return "";
+        }
+
+        //Create HTML change log
+        return getHTMLChangelog(R.xml.changelog, resources, 0);    	
+    }
+    
     //Call to show the change log dialog
     public void show() {
         show(0);
@@ -206,7 +223,14 @@ public class ChangeLogDialog {
                     public void onClick(final DialogInterface dialogInterface, final int i) {
                         dialogInterface.dismiss();
                     }
-                });
+                })
+                .setOnCancelListener( new OnCancelListener() {
+					
+					@Override
+					public void onCancel(DialogInterface dialog) {
+						dialog.dismiss();						
+					}
+				});        		
         AlertDialog dialog = builder.create();
         dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
             @Override
