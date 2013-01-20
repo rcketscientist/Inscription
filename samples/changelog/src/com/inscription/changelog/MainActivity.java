@@ -4,6 +4,7 @@ import com.inscription.ChangeLogDialog;
 
 import android.os.Bundle;
 import android.app.Activity;
+import android.content.Intent;
 import android.view.Menu;
 import android.view.View;
 
@@ -38,4 +39,11 @@ public class MainActivity extends Activity {
                 + ".date { margin-left: 10px; font-size: 10pt; color: #006b9a; margin-top: 5px; display: block; }");
 		changeLogDialog.show();
 	}	
+	
+	public void onShowChangeLogActivityClick(final View v) {
+		//Launch custom changelog activity
+		final Intent _Intent = new Intent(this, CustomChangelogActivity.class);
+		startActivity(_Intent);
+	}	
+	
 }

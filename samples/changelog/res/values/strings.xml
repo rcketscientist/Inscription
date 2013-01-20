@@ -6,5 +6,7 @@
     <string name="menu_settings">Settings</string>
     <string name="btn_show_change_log">Show change log</string>
     <string name="btn_custom_style">Custom style</string>
+    <string name="btn_show_change_log_html">Custom activity</string>
+    <string name="title_activity_custom_changelog">Custom change log activity</string>
 
 </resources>

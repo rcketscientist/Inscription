@@ -22,6 +22,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name="com.inscription.changelog.CustomChangelogActivity"
+            android:label="@string/title_activity_custom_changelog" >
+        </activity>
     </application>
 
 </manifest>
