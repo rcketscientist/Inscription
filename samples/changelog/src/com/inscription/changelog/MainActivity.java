@@ -1,32 +1,49 @@
 package com.inscription.changelog;
 
 import com.inscription.ChangeLogDialog;
-import com.inscription.changelog.R;
 
 import android.os.Bundle;
 import android.app.Activity;
+import android.content.Intent;
 import android.view.Menu;
 import android.view.View;
 
 public class MainActivity extends Activity {
 
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
+	protected void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 	}
 
 	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
+	public boolean onCreateOptionsMenu(final Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.activity_main, menu);
 		return true;
 	}
 	
-	public void onShowChangeLogClick(View v) {
+	public void onShowChangeLogClick(final View v) {
 		//Launch change log dialog
-		ChangeLogDialog _ChangelogDialog = new ChangeLogDialog(this); 
-		_ChangelogDialog.show();  		
+		final ChangeLogDialog changeLogDialog = new ChangeLogDialog(this);
+		changeLogDialog.show();
 	}
 
+	public void onCustomStyleClick(final View v) {
+		//Launch change log dialog
+		final ChangeLogDialog changeLogDialog = new ChangeLogDialog(this);
+		changeLogDialog.setStyle("h1 { margin-left: 10px; font-size: 12pt; color: #006b9a; margin-bottom: 0px;}"
+                + "li { margin-left: 0px; font-size: 12pt; padding-top: 10px; }"
+                + "ul { padding-left: 30px; margin-top: 0px; }"
+                + ".summary { margin-left: 10px; font-size: 10pt; color: #006b9a; margin-top: 5px; display: block; clear: left; }"
+                + ".date { margin-left: 10px; font-size: 10pt; color: #006b9a; margin-top: 5px; display: block; }");
+		changeLogDialog.show();
+	}	
+	
+	public void onShowChangeLogActivityClick(final View v) {
+		//Launch custom changelog activity
+		final Intent _Intent = new Intent(this, CustomChangelogActivity.class);
+		startActivity(_Intent);
+	}	
+	
 }
