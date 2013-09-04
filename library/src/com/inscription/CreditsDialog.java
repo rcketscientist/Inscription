@@ -21,7 +21,6 @@ import java.io.IOException;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
@@ -57,14 +56,27 @@ import android.widget.Toast;
 public class CreditsDialog {
     static final private String TAG = "CreditsDialog"; 
     
-    static final private String TITLE_CREDITS = "title_credits"; 
+//    static final private String TITLE_CREDITS = "title_credits"; 
     static final private String CREDITS_XML = "credits"; 
-	
-    private Context mContext;
+
+    private final Context mContext;
+
+    private String mStyle =   "body { font-size: 9pt; text-align: center; }" 
+			+ "h1 { margin-top: 20px; margin-bottom: 15px; margin-left: 0px; font-size: 1.7EM; text-align: center; }" 
+			+ "h2 { margin-top: 15px; margin-bottom: 5px; padding-left: 0px; margin-left: 0px; font-size: 1EM; }" 
+			+ "li { margin-left: 0px; font-size: 1EM; }" 
+			+ "ul { margin-top: 0px;   margin-bottom: 5px; padding-left: 0px; list-style-type: none; }"
+			+ "a { color: #777777; }"				
+			+ "</style>";
+
+    private int mIcon = 0;
+
+	private int mTitle = R.string.title_credits;
     
 	public CreditsDialog(final Context context) {
         mContext = context;
     }
+
 
 	//Parse the copyright tag and return html code
 	private String parseCreditTag(final XmlResourceParser aXml) throws XmlPullParserException, IOException {
@@ -160,22 +172,36 @@ public class CreditsDialog {
 	}
 	
 	//CSS style for the html
-	private String getStyle() {
-		return 
-				"<style type=\"text/css\">"
-				+ "body { font-size: 9pt; text-align: center; }" 
-				+ "h1 { margin-top: 20px; margin-bottom: 15px; margin-left: 0px; font-size: 1.7EM; text-align: center; }" 
-				+ "h2 { margin-top: 15px; margin-bottom: 5px; padding-left: 0px; margin-left: 0px; font-size: 1EM; }" 
-				+ "li { margin-left: 0px; font-size: 1EM; }" 
-				+ "ul { margin-top: 0px;   margin-bottom: 5px; padding-left: 0px; list-style-type: none; }"
-				+ "a { color: #777777; }"				
-				+ "</style>";
-	}
-	
+    private String getStyle() {
+        return String.format("<style type=\"text/css\">%s</style>", mStyle);
+    }
+
+    public void setStyle(final String style) {
+        mStyle = style;
+    }
+
+    // now we' re able to set a custom icon, default is "no icon"
+    private int getIcon() {
+		return mIcon;
+    }
+    
+    public void setCustomIcon(final int icon) {
+		 mIcon = icon;
+    }
+       
+    // and we can set a custom Title, default is "credits"
+    private int getCustomTitle() {
+		return mTitle ;
+    }
+    
+    public void setCustomTitle(final int title) {
+    	mTitle = title;
+    }
+    
 	//Get the credits in html code, this will be shown in the dialog's webview
 	private String getHTMLCredits(final int aResourceId, final Resources aResource) {
 		String _Result = "<html><head>" + getStyle() + "</head><body>";
-    	XmlResourceParser _xml = aResource.getXml(aResourceId);
+    	final XmlResourceParser _xml = aResource.getXml(aResourceId);
     	try
     	{
             int eventType = _xml.getEventType();
@@ -195,11 +221,11 @@ public class CreditsDialog {
             	eventType = _xml.next();
             }
     	} 
-    	catch (XmlPullParserException e)
+    	catch (final XmlPullParserException e)
     	{
     		Log.e(TAG, e.getMessage(), e);
     	}
-    	catch (IOException e)
+    	catch (final IOException e)
     	{
     		Log.e(TAG, e.getMessage(), e);
     		
@@ -219,17 +245,18 @@ public class CreditsDialog {
     	Resources _Resource;
 		try {
 			_Resource = mContext.getPackageManager().getResourcesForApplication(_PackageName);
-		} catch (NameNotFoundException e) {
+		} catch (final NameNotFoundException e) {
 			e.printStackTrace();
 			return;
 		} 
 		
-        //Get dialog title	        	
-       	int _resID = _Resource.getIdentifier(TITLE_CREDITS , "string", _PackageName);
-        final String _Title = _Resource.getString(_resID);
+//		removed this to let the developer even set a custom title 
+//        //Get dialog title	        	
+//   	int _resID = _Resource.getIdentifier(TITLE_CREDITS , "string", _PackageName);
+//        final String _Title = _Resource.getString(_resID);
  
         //Get credits xml resource id
-      	_resID = _Resource.getIdentifier(CREDITS_XML, "xml", _PackageName);
+      	final int _resID = _Resource.getIdentifier(CREDITS_XML, "xml", _PackageName);
         //Create html credits
        	final String _HTML = getHTMLCredits(_resID, _Resource);
        	
@@ -246,11 +273,13 @@ public class CreditsDialog {
         //Create webview and load html
         final WebView _WebView = new WebView(mContext);
         _WebView.loadData(_HTML, "text/html", "utf-8");
-        AlertDialog.Builder builder = new AlertDialog.Builder(mContext)
-                .setTitle(_Title)
+        
+        final AlertDialog.Builder builder = new AlertDialog.Builder(mContext)
+                .setTitle(getCustomTitle())
                 .setView(_WebView)
+                .setIcon(getIcon())
                 .setPositiveButton(_Close, new Dialog.OnClickListener() {
-                    public void onClick(DialogInterface dialogInterface, int i) {
+                    public void onClick(final DialogInterface dialogInterface, final int i) {
                         dialogInterface.dismiss();
                     }
                 });
