@@ -30,9 +30,9 @@ Martin van Zuilekom
 
 Code contribution
 ============
-Mirko Dimartino (Mirko ddd)
-Hameno
-Pepyakin
+- Mirko Dimartino (Mirko ddd)
+- Hameno
+- Pepyakin
 
 Enjoy!
 
