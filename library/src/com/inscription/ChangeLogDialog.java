@@ -22,10 +22,14 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
+import android.content.Intent;
 import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
+import android.content.pm.ResolveInfo;
 import android.content.res.Resources;
 import android.content.res.XmlResourceParser;
+import android.net.Uri;
 import android.text.format.DateFormat;
 import android.util.Log;
 import android.webkit.WebView;
@@ -36,6 +40,7 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Class to show a change log dialog
@@ -183,11 +188,11 @@ public class ChangeLogDialog {
     }
     
     //Call to show the change log dialog
-    public void show() {
-        show(0);
+    public void show(boolean showBuy) {
+        show(0, showBuy);
     }
 
-    protected void show(final int version) {
+    protected void show(final int version, final boolean showBuy) {
         //Get resources
         final String packageName = mContext.getPackageName();
         final Resources resources;
@@ -224,13 +229,39 @@ public class ChangeLogDialog {
                         dialogInterface.dismiss();
                     }
                 })
+                .setNeutralButton(R.string.website, new Dialog.OnClickListener()
+                {
+                    public void onClick(final DialogInterface dialogInterface, final int i) {
+                    	String url = "http://rawdroid.anthonymandra.com";
+                    	Intent web = new Intent(Intent.ACTION_VIEW);
+                    	web.setData(Uri.parse(url));
+                    	mContext.startActivity(web);
+                    }
+                })
                 .setOnCancelListener( new OnCancelListener() {
 					
 					@Override
 					public void onCancel(DialogInterface dialog) {
 						dialog.dismiss();						
 					}
-				});        		
+				});
+
+        if (showBuy)
+        {
+            builder.setNegativeButton(R.string.buy, new Dialog.OnClickListener()
+            {
+                public void onClick(final DialogInterface dialogInterface, final int i)
+                {
+                    Intent store = getStoreIntent(mContext, "com.anthonymandra.rawdroidpro");
+                    if (store != null)
+                        mContext.startActivity(store);
+//                    Intent intent = new Intent(Intent.ACTION_VIEW);
+//                    intent.setData(Uri.parse("market://details?id=com.anthonymandra.rawdroidpro"));
+//                    mContext.startActivity(intent);
+                }
+            });
+        }
+
         AlertDialog dialog = builder.create();
         dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
             @Override
@@ -241,6 +272,39 @@ public class ChangeLogDialog {
             }
         });
         dialog.show();
+    }
+
+    /**
+     * Returns intent that  opens app in Google Play or Amazon Appstore
+     * @param context
+     * @param packageName
+     * @return null if no market available, otherwise intent
+     */
+    public static Intent getStoreIntent(Context context, String packageName)
+    {
+        Intent i = new Intent(Intent.ACTION_VIEW);
+        String url = "market://details?id=" + packageName;
+        i.setData(Uri.parse(url));
+
+        if (isIntentAvailable(context, i))
+        {
+            return i;
+        }
+
+        i.setData(Uri.parse("http://www.amazon.com/gp/mas/dl/android?p=" + packageName));
+        if (isIntentAvailable(context, i))
+        {
+            return i;
+        }
+        return null;
+    }
+
+    public static boolean isIntentAvailable(Context context, Intent intent) {
+        final PackageManager packageManager = context.getPackageManager();
+        List<ResolveInfo> list =
+                packageManager.queryIntentActivities(intent,
+                        PackageManager.MATCH_DEFAULT_ONLY);
+        return list.size() > 0;
     }
 
 }
