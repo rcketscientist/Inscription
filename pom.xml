@@ -12,7 +12,7 @@
     <groupId>com.cubeactive.martin.inscription</groupId>
     <artifactId>parent</artifactId>
     <packaging>pom</packaging>
-    <version>1.0.0</version>
+    <version>1.2.0-SNAPSHOT</version>
 
     <name>Inscription (Parent)</name>
     <description>Inscription is an open source library to display information about your Android app.</description>
@@ -62,21 +62,27 @@
     </issueManagement>
 
     <properties>
+        <!-- Project Settings -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-
         <java.version>1.6</java.version>
-        <android.version>4.1.1.4</android.version>
         <android.platform>16</android.platform>
+        
+        <!-- Dependency Versions -->
+        <android.version>4.1.1.4</android.version>
         <android-support.version>r7</android-support.version>
-
-        <android-maven.version>3.6.1</android-maven.version>
         <junit.version>4.10</junit.version>
 
+        <!-- Build Plugin Versions -->
+        <maven-compiler-plugin.version>3.1</maven-compiler-plugin.version>
+        <android-maven.version>3.8.2</android-maven.version>
+        <maven-javadoc-plugin.version>2.9.1</maven-javadoc-plugin.version>
+        <maven-release-plugin.version>2.4.2</maven-release-plugin.version>
     </properties>
 
     <dependencyManagement>
         <dependencies>
+            <!-- Android -->
             <dependency>
                 <groupId>com.google.android</groupId>
                 <artifactId>android</artifactId>
@@ -104,7 +110,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-compiler-plugin</artifactId>
-                    <version>3.0</version>
+                    <version>${maven-compiler-plugin.version}</version>
                     <configuration>
                         <source>${java.version}</source>
                         <target>${java.version}</target>
@@ -125,7 +131,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-javadoc-plugin</artifactId>
-                    <version>2.8</version>
+                    <version>${maven-javadoc-plugin.version}</version>
                 </plugin>
 
             </plugins>
@@ -135,7 +141,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-release-plugin</artifactId>
-                <version>2.2.2</version>
+                <version>${maven-release-plugin.version}</version>
                 <configuration>
                     <autoVersionSubmodules>true</autoVersionSubmodules>
                 </configuration>
