@@ -42,8 +42,8 @@ public class MainActivity extends Activity {
 	
 	public void onShowChangeLogActivityClick(final View v) {
 		//Launch custom changelog activity
-		final Intent _Intent = new Intent(this, CustomChangelogActivity.class);
-		startActivity(_Intent);
+		final Intent intent = new Intent(this, CustomChangelogActivity.class);
+		startActivity(intent);
 	}	
 	
 }
