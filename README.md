@@ -13,10 +13,12 @@ Contains
 This library contains the following classes:
 - **ChangeLogDialog**
 - **WhatsNewDialog**
+- **CreditsDialog**
 
 Sample projects:
 - **Inscription Sample Changelog**
 - **Inscription Sample Whats New dialog**
+- **Inscription Sample Credits dialog**
 
 Contribute
 ============
@@ -25,6 +27,12 @@ If you want to contribute to this library fork the repository and send a pull re
 Created by
 ============
 Martin van Zuilekom
+
+Code contribution
+============
+- Mirko Dimartino (Mirko ddd)
+- Hameno
+- Pepyakin
 
 Enjoy!
 

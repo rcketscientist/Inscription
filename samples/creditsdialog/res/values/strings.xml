@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Credits Demo</string>
+    <string name="action_settings">Settings</string>
+    <string name="btn_show_credits_dialog">Show credits dialog</string>
+    <string name="btn_custom_style">Custom style</string>
+    <string name="btn_custom_style_2">Custom style 2</string>    
+</resources>
