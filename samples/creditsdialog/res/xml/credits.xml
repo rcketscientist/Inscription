@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+	<credits>
+	    <section title="Inscription">
+		    <function title="Created by">
+		        <credit>Martin van Zuilekom</credit>        
+			</function>	    	    	   
+		    <function title="Code contribution">
+		        <credit>Mirko Dimartino (Mirko ddd)</credit>        
+		        <credit>Hameno</credit>        
+		        <credit>Pepyakin</credit>        
+			</function>	    	    	   
+		</section>
+		<websites>
+		    <url title="Inscription on Github">https://github.com/MartinvanZ/Inscription</url>
+		</websites>	
+		<copyright>(c) 2013 Martin van Zuilekom. Licensed under the Apache License, Version 2.0 (the "License").<url>http://www.apache.org/licenses/LICENSE-2.0</url></copyright>
+	</credits> 
