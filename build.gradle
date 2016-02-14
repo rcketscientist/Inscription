@@ -1,24 +1,24 @@
 buildscript {
-	repositories {
-		jcenter()
-	}
+    repositories {
+        jcenter()
+    }
 
-	dependencies {
-		classpath 'com.android.tools.build:gradle:2.0.0-beta4'
-	}
+    dependencies {
+        classpath 'com.android.tools.build:gradle:2.0.0-beta4'
+    }
 }
-
 apply plugin: 'com.android.library'
-
 android {
-	compileSdkVersion 19
-	buildToolsVersion "19.1.0"
+    compileSdkVersion 19
+    buildToolsVersion '23.0.2'
 
-	sourceSets {
-		main {
-			manifest.srcFile 'library/AndroidManifest.xml'
-			java.srcDirs = ['library/src']
-			res.srcDirs = ['library/res']
-		}
-	}
+    sourceSets {
+        main {
+            manifest.srcFile 'library/AndroidManifest.xml'
+            java.srcDirs = ['library/src']
+            res.srcDirs = ['library/res']
+        }
+    }
+}
+dependencies {
 }
